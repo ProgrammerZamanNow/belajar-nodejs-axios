@@ -129,3 +129,18 @@ describe('HTTP Method', () => {
         expect(response.data.success).toBe(true);
     });
 });
+
+describe('Error Handler', () => {
+    const httpClient = axios.create({
+        baseURL: "https://www.programmerzamannow.com",
+        timeout: 5000,
+        validateStatus: status => {
+            return status < 500;
+        }
+    });
+
+    it('should error if 404 not found', async () => {
+        const response = await httpClient.get('/not-found');
+        expect(response.status).toBe(404);
+    });
+});
