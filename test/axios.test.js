@@ -29,6 +29,22 @@ describe('HTTP Method', () => {
         {
             synchronous: false
         }
+    );
+
+    httpClient.interceptors.response.use(
+        async (response) => {
+            const fullUrl = response.config.baseURL + response.config.url;
+            const body = JSON.stringify(response.data);
+            console.info(`Receive response from ${fullUrl} with body ${body}`);
+            return response;
+        },
+        async (error) => {
+            console.error(`Response error : ${error.message}`);
+            return Promise.reject(error);
+        },
+        {
+            synchronous: false
+        }
     )
 
     it('should support GET method', async () => {
